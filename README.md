@@ -1,5 +1,5 @@
 ![image](https://github.com/user-attachments/assets/0c539b8e-8a91-46c7-90cc-5296339ea7b9)
-Healthcare Management App
+**Healthcare Management App**
 A comprehensive healthcare management app designed for booking and managing client details on a secured cloud server. It includes SMS reminders for clients, ideal for medical centers, hospitals, and any healthcare-related facilities.
 
 Features
