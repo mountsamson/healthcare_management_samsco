@@ -31,7 +31,7 @@ export const AppointmentForm = ({
 }: {
   userId: string;
   patientId: string;
-  type: "create" | "schedule" | "cancel";
+  type: "create" | "schedule" | "cancel" | "delete";
   appointment?: Appointment;
   setOpen?: (open: boolean) => void;
 }) => {

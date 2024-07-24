@@ -88,6 +88,12 @@ export const columns: ColumnDef<Appointment>[] = [
             appointment={data}
             type="cancel"
           />
+          <AppointmentModal
+            patientId={data.patient.$id}
+            userId={data.userId}
+            appointment={data}
+            type="delete"
+          />
         </div>
       );
     },
