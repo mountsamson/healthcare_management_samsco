@@ -12,6 +12,7 @@ import { Doctors } from "@/constants";
 import {
   createAppointment,
   updateAppointment,
+  deleteAppointment,
 } from "@/lib/actions/appointment.actions";
 import { getAppointmentSchema } from "@/lib/validation";
 import { Appointment } from "@/types/appwrite.types";
@@ -124,6 +125,9 @@ export const AppointmentForm = ({
     case "schedule":
       buttonLabel = "Schedule Appointment";
       break;
+    case "delete":
+      buttonLabel = "Delete Appointment";
+      break;
     default:
       buttonLabel = "Submit Apppointment";
   }
@@ -213,7 +217,11 @@ export const AppointmentForm = ({
         <SubmitButton
           isLoading={isLoading}
           className={`${
-            type === "cancel" ? "shad-danger-btn" : "shad-primary-btn"
+            type === "cancel"
+              ? "shad-danger-btn"
+              : type === "delete"
+              ? "shad-danger-btn"
+              : "shad-primary-btn"
           } w-full`}
         >
           {buttonLabel}

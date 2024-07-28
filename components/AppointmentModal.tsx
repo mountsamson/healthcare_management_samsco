@@ -6,10 +6,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { AppointmentForm } from "./forms/AppointmentForm";
 import { Appointment } from "@/types/appwrite.types";
+import SubmitButton from "./SubmitButton";
+import { deleteAppointment } from "@/lib/actions/appointment.actions";
 
 const AppointmentModal = ({
   type,
@@ -23,6 +25,26 @@ const AppointmentModal = ({
   appointment?: Appointment;
 }) => {
   const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    if (isDeleting && appointment?.$id) {
+      setIsLoading(true); // Set loading state
+      deleteAppointment(appointment.$id)
+        .then(() => {
+          setOpen(false);
+        })
+        .catch((error) => {
+          console.error("Failed to delete appointment:", error);
+        })
+        .finally(() => {
+          setIsDeleting(false);
+          setIsLoading(false); // Reset loading state
+        });
+    }
+  }, [isDeleting, appointment?.$id]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -44,17 +66,28 @@ const AppointmentModal = ({
         <DialogHeader className="mb-4 space-y-3">
           <DialogTitle className="capitalize">{type}</DialogTitle>
           <DialogDescription>
-            Please fill in the following details to {type} to the appointment
-            details
+            {type === "delete"
+              ? "Are you sure you want to delete this appointment?"
+              : `Please fill in the following details to ${type} the appointment details`}
           </DialogDescription>
         </DialogHeader>
-        <AppointmentForm
-          userId={userId}
-          patientId={patientId}
-          type={type}
-          appointment={appointment}
-          setOpen={setOpen}
-        />
+        {type !== "delete" ? (
+          <AppointmentForm
+            userId={userId}
+            patientId={patientId}
+            type={type}
+            appointment={appointment}
+            setOpen={setOpen}
+          />
+        ) : (
+          <SubmitButton
+            isLoading={isLoading}
+            className="bg-red-700"
+            onClick={() => setIsDeleting(true)}
+          >
+            Delete
+          </SubmitButton>
+        )}
       </DialogContent>
     </Dialog>
   );
